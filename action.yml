@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action
+---
+name: Setup Node.js with pnpm
+description: "Setup Node.js with pnpm"
+
+inputs:
+    download-build:
+        default: "false"
+        description: Download build output from the artifacts?
+        required: false
+
+runs:
+    using: composite
+    steps:
+        - name: Checkout to ${{ github.repository }} repository
+          # https://github.com/actions/checkout
+          uses: actions/checkout@v3
+
+        - name: Setup the latest pnpm version
+          # https://github.com/pnpm/action-setup
+          uses: pnpm/action-setup@v2
+          with:
+              version: latest
+
+        - name: Setup the latest Node.js LTS version
+          # https://github.com/actions/setup-node
+          uses: actions/setup-node@v3
+          with:
+              cache: pnpm
+              node-version: lts/*
+
+        - name: Install Node.js dependencies with pnpm
+          # https://pnpm.io/cli/install
+          run: pnpm install --frozen-lockfile
+          shell: bash
+
+        - name: Download build output from artifacts
+          if: inputs.download-build == 'true'
+          # https://github.com/actions/download-artifact
+          uses: actions/download-artifact@v3
+
+        - name: Extract build output from artifacts
+          if: inputs.download-build == 'true'
+          # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
+          shell: bash
+          run: >
+              curl
+              --request GET
+              https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-artifacts.sh
+              | sh
