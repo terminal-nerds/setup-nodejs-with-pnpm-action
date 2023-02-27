@@ -38,8 +38,11 @@ runs:
           if: inputs.download-build == 'true'
           # https://github.com/actions/download-artifact
           uses: actions/download-artifact@v3
+          with:
+              name: build-output
+              path: build-output
 
-        - name: Extract build output from artifacts
+        - name: Extract build output from downloaded artifact
           if: inputs.download-build == 'true'
           # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
           shell: bash
@@ -47,4 +50,4 @@ runs:
               curl
               --request GET
               https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-artifacts.sh
-              | sh
+              | bash -s build-output
