@@ -20,7 +20,7 @@ runs:
           # https://github.com/pnpm/action-setup
           uses: pnpm/action-setup@v2
           with:
-              version: latest
+              version: 7.28.0
 
         - name: Setup the latest Node.js LTS version
           # https://github.com/actions/setup-node
