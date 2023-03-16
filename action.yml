@@ -20,7 +20,7 @@ runs:
           # https://github.com/pnpm/action-setup
           uses: pnpm/action-setup@v2
           with:
-              version: 7.28.0
+              version: latest
 
         - name: Setup the latest Node.js LTS version
           # https://github.com/actions/setup-node
@@ -31,7 +31,7 @@ runs:
 
         - name: Install Node.js dependencies with pnpm
           # https://pnpm.io/cli/install
-          run: pnpm install --frozen-lockfile
+          run: pnpm install --frozen-lockfile --no-optional
           shell: bash
 
         - name: Download build output from artifacts
