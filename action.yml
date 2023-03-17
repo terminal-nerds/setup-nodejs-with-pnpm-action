@@ -31,7 +31,13 @@ runs:
 
         - name: Install Node.js dependencies with pnpm
           # https://pnpm.io/cli/install
-          run: pnpm install --frozen-lockfile --no-optional
+          run: >
+              pnpm install
+              --frozen-lockfile
+              # --no-optional
+              #  FIXME: The above flag breaks install `turbo` with pnpm
+              # https://github.com/vercel/turbo/issues/3328
+              # https://github.com/npm/cli/issues/4828
           shell: bash
 
         - name: Download build output from artifacts
